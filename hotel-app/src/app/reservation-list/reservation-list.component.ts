@@ -13,13 +13,17 @@ export class ReservationListComponent {
   constructor(private reservationService: ReservationService) { }
 
   ngOnInit() {
-    this.reservations = this.reservationService.getReservations();
-    console.log(this.reservations[0].roomNumber, this.reservations[0].checkInDate, this.reservations[0].checkOutDate, this.reservations[0].guestName, this.reservations[0].guestEmail, this.reservations[0].id);
+    this.reservationService.getReservations().subscribe(
+      reservations => this.reservations = reservations
+    );
   }
 
   deleteReservation(id: string) {
-    this.reservationService.deleteReservation(id);
-    this.reservations = this.reservationService.getReservations();
+    this.reservationService.deleteReservation(id).subscribe(
+      reservation => this.reservations.find(res => res.id === reservation.id) 
+    ); 
+    // this.reservations = this.reservationService.getReservations();
   }
 
 }
+
